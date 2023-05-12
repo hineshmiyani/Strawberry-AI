@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+@layer components {
+  .bg-strawberry-gradient {
+    background: radial-gradient(
+        100% 100% at 50% 0,
+        rgba(255, 184, 226, 0.51) 0,
+        rgba(255, 255, 255, 0) 100%
+      ),
+      #fff;
+  }
+
+  .navlink,
+  .toolbar__tab {
+    transition: 250ms;
+    @apply rounded-xl;
+  }
+
+  .navlink:hover,
+  .toolbar__tab:hover {
+    background-color: #99a1bd13;
+    @apply text-textPrimary;
+  }
+
+  .login-button {
+    @apply px-4 py-2 flex items-center font-semibold  text-textPink bg-lightPink rounded-full cursor-pointer transition-colors duration-[125ms] ease-in  delay-0  hover:text-lightPink;
+  }
+
+  .shadow-outline-pink {
+    box-shadow: 0px 0px 0px 1pt #fb118e1f;
+    background-color: #fb118e1f;
+    transform: scale(1.03);
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Select the scrollbar */
+*::-webkit-scrollbar {
+  cursor: pointer;
+  @apply w-[5px] h-[5px];
+}
+
+/* Set the color and roundness of the scrollbar track */
+*::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Set the color and roundness of the scrollbar thumb */
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  cursor: pointer;
+  @apply bg-lightPink;
+}
