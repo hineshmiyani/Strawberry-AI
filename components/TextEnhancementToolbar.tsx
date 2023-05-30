@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import useIsMobile from '@/hooks/useIsMobile'
 import { useToolbarTabsContext } from '@/context/ToolbarContextProvider'
 
@@ -29,8 +29,8 @@ const TextEnhancementToolbar = () => {
         <button
           key={name}
           className={`${
-            active ? 'bg-lightPink text-textPink' : 'text-[#0a192f] opacity-90'
-          } px-3 py-1.5 font-medium flex items-center justify-between rounded-xl duration-200 select-none cursor-pointer flex-shrink-0 `}
+            active ? 'bg-lightPink text-textPink' : 'text-textDarkBlue opacity-90'
+          } px-3 py-1.5 font-medium flex items-center justify-between rounded-xl duration-500 ease-in-out transition-colors select-none cursor-pointer flex-shrink-0`}
           onClick={() => handleTabClick(name)}
         >
           <div className="flex items-center">

@@ -25,7 +25,7 @@ const Header = () => {
       <div className="mx-auto flex items-center justify-between w-full max-w-[1600px]">
         <Link href="/" className="flex items-center gap-2 cursor-pointer ">
           <div className="relative w-8 h-8">
-            <Image src="/logo/strawberry-filled.svg" alt="Logo" fill />
+            <Image src="/assets/logo/strawberry-filled.svg" alt="Logo" fill />
           </div>
           <h1 className="text-textPink text-lg font-medium">Strawberry.ai</h1>
         </Link>

@@ -1,10 +1,20 @@
 'use client'
 
-import { collection, orderBy, query } from 'firebase/firestore'
+import {
+  collection,
+  deleteDoc,
+  doc,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore'
 import { useSession } from 'next-auth/react'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useRouter } from 'next/navigation'
+import { StarIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid'
 import { db } from '@/firebase'
 
 type Props = {
@@ -13,10 +23,11 @@ type Props = {
 }
 
 const HistoryDrawer = ({ isHistoryDrawerOpen, setIsHistoryDrawerOpen }: Props) => {
-  const { data: session } = useSession()
   const router = useRouter()
+  const { data: session } = useSession()
+  const promptCtnRef = useRef<HTMLDivElement>(null)
 
-  const [prompts, loading, error] = useCollection(
+  const [prompts] = useCollection(
     session &&
       query(
         collection(db, 'users', session?.user?.email || '', 'prompts'),
@@ -24,7 +35,47 @@ const HistoryDrawer = ({ isHistoryDrawerOpen, setIsHistoryDrawerOpen }: Props) =
       )
   )
 
-  console.log({ prompts, loading, error })
+  useEffect(() => {
+    if (promptCtnRef?.current) {
+      promptCtnRef.current.scrollTop = 0
+    }
+  }, [isHistoryDrawerOpen])
+
+  const handleSavePrompt = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    promptId: string,
+    isSaved: boolean
+  ) => {
+    e.stopPropagation()
+
+    const promptRef = doc(db, 'users', session?.user?.email || '', 'prompts', promptId)
+
+    // update isSaved field
+    try {
+      await updateDoc(promptRef, {
+        isSaved: !isSaved,
+        updatedAt: serverTimestamp(),
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleDeletePrompt = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    promptId: string
+  ) => {
+    e.stopPropagation()
+
+    const promptRef = doc(db, 'users', session?.user?.email || '', 'prompts', promptId)
+
+    // delete prompt
+    try {
+      await deleteDoc(promptRef)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <>
@@ -42,12 +93,12 @@ const HistoryDrawer = ({ isHistoryDrawerOpen, setIsHistoryDrawerOpen }: Props) =
             (isHistoryDrawerOpen ? ' translate-x-0 ' : ' translate-x-full ')
           }
         >
-          <div className="py-5 pl-5 pr-2 relative w-screen max-w-lg pb-10 flex flex-col gap-6 overflow-y-hidden h-full">
+          <div className="p-4 relative w-screen max-w-lg pb-10 flex flex-col gap-4 overflow-y-hidden h-full ">
             <div className="flex items-center justify-between">
-              <h1 className="font-bold text-xl">History</h1>
+              <h1 className="font-bold text-xl text-textDarkBlue opacity-90">History</h1>
               <button
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-white hover:text-gray-500 rounded-full text-sm p-2  inline-flex items-center "
+                className="text-textPink bg-transparent hover:bg-lightPink  rounded-full text-sm p-2  inline-flex items-center "
                 onClick={() => setIsHistoryDrawerOpen(false)}
               >
                 <svg
@@ -66,23 +117,47 @@ const HistoryDrawer = ({ isHistoryDrawerOpen, setIsHistoryDrawerOpen }: Props) =
                 <span className="sr-only">Close menu</span>
               </button>
             </div>
-            <div className="w-full h-full overflow-y-hidden">
-              <div className="pr-2 flex flex-col gap-4 h-full overflow-y-auto overflow-x-hidden">
+            <div className="p-2 w-full h-full overflow-y-hidden bg-white rounded-lg z-1 border border-solid border-[#d2d9ee] transition-colors  duration-1000 ease-in-out">
+              <div
+                ref={promptCtnRef}
+                className="pr-2 flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden"
+              >
                 {prompts?.docs?.map((prompt) => (
                   <div
                     key={prompt?.id}
-                    className="p-1.5 text-sm gap-1 cursor-pointer select-none bg-white rounded-2xl z-1 border border-solid border-[#d2d9ee] transition-colors  duration-1000 ease-in-out"
+                    className="p-2.5 text-sm flex gap-3 justify-between rounded-lg z-1  cursor-pointer select-none duration-[400ms] ease-in-out transition-all hover:bg-slate-50 hover:drop-shadow-sm"
                     role="presentation"
                     onClick={() => {
                       router.push(`/?id=${prompt?.id}`)
                       setIsHistoryDrawerOpen(false)
                     }}
                   >
-                    <div className="p-2.5 hover:bg-[#f5f6fce2] rounded-xl">
+                    <div className="space-y-1.5 ">
                       <p className="line-clamp-2">{prompt?.data()?.input}</p>
-                      <p className="line-clamp-2 opacity-60">
+                      <p className="line-clamp-2 opacity-70">
                         {prompt?.data()?.output?.replace(/.*\n\n/g, '')}
                       </p>
+                    </div>
+
+                    <div className="flex flex-col justify-center gap-2.5">
+                      <button
+                        type="button"
+                        className="bg-transparent hover:bg-lightPink rounded-full text-sm p-1.5  inline-flex items-center "
+                        onClick={(e) => handleSavePrompt(e, prompt?.id, prompt?.data()?.isSaved)}
+                      >
+                        {prompt?.data()?.isSaved ? (
+                          <StarIconFilled className="w-5 h-5 text-textPink" />
+                        ) : (
+                          <StarIcon className="w-5 h-5 text-textPink" />
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className="bg-transparent hover:bg-lightPink rounded-full text-sm p-1.5  inline-flex items-center "
+                        onClick={(e) => handleDeletePrompt(e, prompt?.id)}
+                      >
+                        <TrashIcon className="w-5 h-5  text-textPink" />
+                      </button>
                     </div>
                   </div>
                 ))}
