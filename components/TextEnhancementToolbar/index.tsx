@@ -21,7 +21,7 @@ const TextEnhancementToolbar = () => {
 
   return (
     <div
-      className={`mb-2 flex gap-3.5 rounded-xl overflow-x-auto ${
+      className={`mb-2 flex gap-3.5 overflow-x-auto rounded-xl ${
         isMobile ? 'no-scrollbar' : 'pb-1.5'
       }`}
     >
@@ -30,7 +30,7 @@ const TextEnhancementToolbar = () => {
           key={name}
           className={`${
             active ? 'bg-lightPink text-textPink' : 'text-textDarkBlue opacity-90'
-          } px-3 py-1.5 font-medium flex items-center justify-between rounded-xl duration-500 ease-in-out transition-colors select-none cursor-pointer flex-shrink-0`}
+          } flex flex-shrink-0 cursor-pointer select-none items-center justify-between rounded-xl px-3 py-1.5 font-medium transition-colors duration-500 ease-in-out`}
           onClick={() => handleTabClick(name)}
         >
           <div className="flex items-center">

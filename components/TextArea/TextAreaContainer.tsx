@@ -24,7 +24,7 @@ const TextAreaContainer = () => {
   const isDebouncedPromptLoading = useDebounce(isPromptLoading, 300)
 
   return (
-    <div className="flex  flex-col lg:flex-row gap-2 min-h-[calc(100%-51px)] h-full lg:h-auto overflow-hidden">
+    <div className="flex  h-full min-h-[calc(100%-51px)] flex-col gap-2 overflow-hidden lg:h-auto lg:flex-row">
       <InputTextArea
         prompt={prompt}
         isPromptLoading={isDebouncedPromptLoading}

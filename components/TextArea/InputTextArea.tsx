@@ -3,8 +3,9 @@ import React, { Dispatch, FormEvent, SetStateAction, useEffect, useMemo, useStat
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
 import { DocumentData, addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useSession } from 'next-auth/react'
-import Spinner from './Spinner'
-import Skeleton from './Skeleton'
+import axios from 'axios'
+import Spinner from '../Fallback/Spinner'
+import Skeleton from '../Fallback/Skeleton'
 import { useToolbarTabsContext } from '@/context/ToolbarContextProvider'
 import { db } from '@/firebase'
 
@@ -27,7 +28,7 @@ const InputTextArea = ({
   const { tabs, setTabs } = useToolbarTabsContext()
   const [inputText, setInputText] = useState('')
 
-  const model = 'text-davinci-003'
+  const model = 'gpt-3.5-turbo'
   const activeTabs = useMemo(() => tabs?.filter((tab) => tab?.active), [tabs])
 
   useEffect(() => {
@@ -69,22 +70,26 @@ const InputTextArea = ({
     const trimmedInput = inputText.trim()
     const combinedInputText = `${prefixText} to below message: \n\n${trimmedInput}`
 
-    await fetch('/api/askQuestion', {
-      method: 'POST',
+    const options = {
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      data: {
         prompt: combinedInputText,
         model,
         session,
-      }),
-    }).then(async (res) => {
-      const data = await res?.json()
+      },
+    }
+
+    try {
+      const res = await axios('/api/askQuestion', options)
+      const data = res?.data
 
       const prompt: Prompt = {
         input: trimmedInput,
-        output: data?.choices?.[0]?.text || 'Strawberry.ai was unable to repharse your text!',
+        output:
+          data?.choices?.[0]?.message?.content || 'Strawberry.ai was unable to repharse your text!',
         createdAt: serverTimestamp(),
         tags: activeTabNames,
         isSaved: false,
@@ -96,16 +101,17 @@ const InputTextArea = ({
 
       setOutputText(prompt?.output)
       setIsLoading(false)
-    })
+    } catch (error) {
+      console.error(error)
+    }
   }
-
   return (
-    <div className="p-4 pb-[60px] h-auto  min-h-[calc(50%-32px)] lg:min-h-[50%] w-full rounded-xl  bg-[#f5f6fc] text-textPrimary">
+    <div className="h-auto min-h-[calc(50%-32px)] w-full  rounded-xl bg-[#f5f6fc] p-4 pb-[60px]  text-textPrimary lg:min-h-[50%]">
       {!isPromptLoading ? (
         <form onSubmit={handleSubmit} className="h-full">
           <textarea
             name="text"
-            className="pr-2 bg-inherit w-full h-full resize-none outline-none"
+            className="h-full w-full resize-none bg-inherit pr-2 outline-none"
             value={inputText}
             spellCheck={false}
             placeholder="Rewrite your text by entering or pasting it here and clicking 'Paraphrase'"
@@ -114,9 +120,9 @@ const InputTextArea = ({
 
           <button
             type="submit"
-            className={`w-[140px] h-10 ml-auto mr-1.5 px-4 py-2 font-medium rounded-full flex justify-center items-center select-none bg-lightPink text-textPink  ${
+            className={`ml-auto mr-1.5 flex h-10 w-[140px] select-none items-center justify-center rounded-full bg-lightPink px-4 py-2 font-medium text-textPink  ${
               inputText && activeTabs?.length > 0 && !isLoading
-                ? 'cursor-pointer transition-all  duration-[150] ease-in  delay-0 opacity-100   hover:shadow-outline-pink'
+                ? 'hover:shadow-outline-pink cursor-pointer  opacity-100 transition-all  delay-0 duration-[150]   ease-in'
                 : 'opacity-50'
             } `}
             disabled={!inputText || activeTabs?.length === 0 || isLoading}
@@ -124,10 +130,10 @@ const InputTextArea = ({
             {!isLoading ? (
               <div className="flex items-center gap-2 ">
                 <p>Paraphrase</p>
-                <PaperAirplaneIcon className="w-5 h-5 " />
+                <PaperAirplaneIcon className="h-5 w-5 " />
               </div>
             ) : (
-              <Spinner className="!w-6 !h-6" />
+              <Spinner className="!h-6 !w-6" />
             )}
           </button>
         </form>

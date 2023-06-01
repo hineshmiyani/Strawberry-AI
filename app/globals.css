@@ -30,13 +30,25 @@
   }
 
   .login-button {
-    @apply px-4 py-2 flex items-center font-semibold  text-textPink bg-lightPink rounded-full cursor-pointer transition-colors duration-[125ms] ease-in  delay-0  hover:text-lightPink;
+    @apply hover:shadow-outline-pink flex cursor-pointer items-center rounded-full  bg-lightPink px-4 py-2  font-semibold text-textPink  transition-all duration-[150] ease-in-out;
   }
 
   .shadow-outline-pink {
     box-shadow: 0px 0px 0px 1pt #fb118e1f;
     background-color: #fb118e1f;
     transform: scale(1.03);
+  }
+
+  .unset {
+    all: unset !important;
+  }
+
+  .custom-dropdown-ctn {
+    @apply [&>div:first-child>button]:unset hover:[&>div:first-child>button]:unset focus:[&>div:first-child>button]:unset [&>div:first-child>button>span]:unset focus:[&>div:first-child>button]:!ring-0 [&>div:first-child]:flex;
+  }
+
+  .custom-dropdown-ctn > div:nth-child(2) {
+    @apply rounded-2xl border-[#d2d9ee];
   }
 }
 
@@ -54,7 +66,7 @@
 /* Select the scrollbar */
 *::-webkit-scrollbar {
   cursor: pointer;
-  @apply w-[5px] h-[5px];
+  @apply h-[5px] w-[5px];
 }
 
 /* Set the color and roundness of the scrollbar track */

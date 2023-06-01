@@ -2,9 +2,9 @@ import openai from './openai'
 
 const query = async (prompt: string, model: string) => {
   const res = await openai
-    .createCompletion({
+    .createChatCompletion({
       model,
-      prompt,
+      messages: [{ role: 'user', content: prompt }],
       temperature: 0.9,
       top_p: 1,
       max_tokens: 1000,

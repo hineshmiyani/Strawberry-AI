@@ -29,7 +29,7 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
   const router = useRouter()
   const promptCtnRef = useRef<HTMLDivElement>(null)
 
-  const [prompts, loading, error] = useCollection(
+  const [prompts] = useCollection(
     session &&
       query(
         collection(db, 'users', session?.user?.email || '', 'prompts'),
@@ -43,8 +43,6 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
       promptCtnRef.current.scrollTop = 0
     }
   }, [isSavedDrawerOpen])
-
-  console.log('Prompts', { prompts, loading, error })
 
   const handleSavePrompt = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -85,30 +83,30 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
   return (
     <>
       <main
-        className={`fixed overflow-hidden z-10 bg-gray-900 bg-opacity-25 inset-0 transform  ease-in-out
+        className={`fixed inset-0 z-10 transform overflow-hidden bg-gray-900 bg-opacity-25  ease-in-out
          ${
            isSavedDrawerOpen
-             ? 'transition-opacity opacity-100 translate-x-0 duration-500'
-             : 'translate-x-full delay-500 opacity-0'
+             ? 'translate-x-0 opacity-100 transition-opacity duration-500'
+             : 'translate-x-full opacity-0 delay-500'
          }`}
       >
         <section
           className={
-            'w-screen max-w-lg right-0 absolute bg-strawberry-gradient h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform  ' +
+            'bg-strawberry-gradient delay-400 absolute right-0 h-full w-screen max-w-lg transform shadow-xl transition-all duration-500 ease-in-out  ' +
             (isSavedDrawerOpen ? ' translate-x-0 ' : ' translate-x-full ')
           }
         >
-          <div className="p-4 relative w-screen max-w-lg pb-10 flex flex-col gap-4 overflow-y-hidden h-full ">
+          <div className="relative flex h-full w-screen max-w-lg flex-col gap-4 overflow-y-hidden p-4 pb-10 ">
             <div className="flex items-center justify-between">
-              <h1 className="font-bold text-xl text-textDarkBlue opacity-90">Saved</h1>
+              <h1 className="text-xl font-bold text-textDarkBlue opacity-90">Saved</h1>
               <button
                 type="button"
-                className="text-textPink bg-transparent hover:bg-lightPink  rounded-full text-sm p-2  inline-flex items-center "
+                className="inline-flex items-center rounded-full  bg-transparent p-2 text-sm  text-textPink hover:bg-lightPink "
                 onClick={() => setIsSavedDrawerOpen(false)}
               >
                 <svg
                   aria-hidden="true"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -122,16 +120,16 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
                 <span className="sr-only">Close menu</span>
               </button>
             </div>
-            <div className="p-2 w-full h-full overflow-y-hidden bg-white rounded-lg z-1 border border-solid border-[#d2d9ee] transition-colors  duration-1000 ease-in-out">
+            <div className="z-1 h-full w-full overflow-y-hidden rounded-lg border border-solid border-[#d2d9ee] bg-white p-2 transition-colors  duration-1000 ease-in-out">
               <div
                 ref={promptCtnRef}
-                className="pr-2 flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden"
+                className="flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2"
               >
                 {!prompts?.empty ? (
                   prompts?.docs?.map((prompt) => (
                     <div
                       key={prompt?.id}
-                      className="p-2.5 text-sm flex gap-3 justify-between rounded-lg z-1  cursor-pointer select-none duration-[400ms] ease-in-out transition-all hover:bg-slate-50 hover:drop-shadow-sm"
+                      className="z-1 flex cursor-pointer select-none justify-between gap-3 rounded-lg  p-2.5 text-sm transition-all duration-[400ms] ease-in-out hover:bg-slate-50 hover:drop-shadow-sm"
                       role="presentation"
                       onClick={() => {
                         router.push(`/?id=${prompt?.id}`)
@@ -140,35 +138,33 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
                     >
                       <div className="space-y-1.5 ">
                         <p className="line-clamp-2">{prompt?.data()?.input}</p>
-                        <p className="line-clamp-2 opacity-70">
-                          {prompt?.data()?.output?.replace(/.*\n\n/g, '')}
-                        </p>
+                        <p className="line-clamp-2 opacity-70">{prompt?.data()?.output?.trim()}</p>
                       </div>
 
                       <div className="flex flex-col justify-center gap-2.5">
                         <button
                           type="button"
-                          className="bg-transparent hover:bg-lightPink rounded-full text-sm p-1.5  inline-flex items-center "
+                          className="inline-flex items-center rounded-full bg-transparent p-1.5  text-sm hover:bg-lightPink "
                           onClick={(e) => handleSavePrompt(e, prompt?.id, prompt?.data()?.isSaved)}
                         >
                           {prompt?.data()?.isSaved ? (
-                            <StarIconFilled className="w-5 h-5 text-textPink" />
+                            <StarIconFilled className="h-5 w-5 text-textPink" />
                           ) : (
-                            <StarIcon className="w-5 h-5 text-textPink" />
+                            <StarIcon className="h-5 w-5 text-textPink" />
                           )}
                         </button>
                         <button
                           type="button"
-                          className="bg-transparent hover:bg-lightPink rounded-full text-sm p-1.5  inline-flex items-center "
+                          className="inline-flex items-center rounded-full bg-transparent p-1.5  text-sm hover:bg-lightPink "
                           onClick={(e) => handleDeletePrompt(e, prompt?.id)}
                         >
-                          <TrashIcon className="w-5 h-5  text-textPink" />
+                          <TrashIcon className="h-5 w-5  text-textPink" />
                         </button>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="flex justify-center items-center h-full">
+                  <div className="flex h-full items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
                       <Image src="/assets/images/star-card.png" width={180} height={180} alt="" />
                       <p className="text-textDarkBlue opacity-80">
@@ -184,7 +180,7 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
 
         <section
           role="presentation"
-          className=" w-screen h-full cursor-pointer "
+          className=" h-full w-screen cursor-pointer "
           onClick={() => setIsSavedDrawerOpen(false)}
         ></section>
       </main>
