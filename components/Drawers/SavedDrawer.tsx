@@ -166,8 +166,14 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
                 ) : (
                   <div className="flex h-full items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
-                      <Image src="/assets/images/star-card.png" width={180} height={180} alt="" />
-                      <p className="text-textDarkBlue opacity-80">
+                      <Image
+                        src="/assets/images/star-card.png"
+                        width={180}
+                        height={180}
+                        alt=""
+                        priority
+                      />
+                      <p className="max-w-[80%] text-center text-textDarkBlue opacity-80">
                         Tap the star icon to save important phrases.
                       </p>
                     </div>

@@ -48,7 +48,7 @@
   }
 
   .custom-dropdown-ctn > div:nth-child(2) {
-    @apply rounded-2xl border-[#d2d9ee];
+    @apply dark:unset rounded-2xl border-[#d2d9ee];
   }
 }
 

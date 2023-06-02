@@ -14,6 +14,7 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { useRouter } from 'next/navigation'
 import { StarIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid'
+import Image from 'next/image'
 import { db } from '@/firebase'
 
 type Props = {
@@ -121,43 +122,61 @@ const HistoryDrawer = ({ isHistoryDrawerOpen, setIsHistoryDrawerOpen }: Props) =
                 ref={promptCtnRef}
                 className="flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2"
               >
-                {prompts?.docs?.map((prompt) => (
-                  <div
-                    key={prompt?.id}
-                    className="z-1 flex cursor-pointer select-none justify-between gap-3 rounded-lg  p-2.5 text-sm transition-all duration-[400ms] ease-in-out hover:bg-slate-50 hover:drop-shadow-sm"
-                    role="presentation"
-                    onClick={() => {
-                      router.push(`/?id=${prompt?.id}`)
-                      setIsHistoryDrawerOpen(false)
-                    }}
-                  >
-                    <div className="space-y-1.5 ">
-                      <p className="line-clamp-2">{prompt?.data()?.input?.trim()}</p>
-                      <p className="line-clamp-2 opacity-70">{prompt?.data()?.output?.trim()}</p>
-                    </div>
+                {!prompts?.empty ? (
+                  prompts?.docs?.map((prompt) => (
+                    <div
+                      key={prompt?.id}
+                      className="z-1 flex cursor-pointer select-none justify-between gap-3 rounded-lg  p-2.5 text-sm transition-all duration-[400ms] ease-in-out hover:bg-slate-50 hover:drop-shadow-sm"
+                      role="presentation"
+                      onClick={() => {
+                        router.push(`/?id=${prompt?.id}`)
+                        setIsHistoryDrawerOpen(false)
+                      }}
+                    >
+                      <div className="space-y-1.5 ">
+                        <p className="line-clamp-2">{prompt?.data()?.input?.trim()}</p>
+                        <p className="line-clamp-2 opacity-70">{prompt?.data()?.output?.trim()}</p>
+                      </div>
 
-                    <div className="flex flex-col justify-center gap-2.5">
-                      <button
-                        type="button"
-                        className="inline-flex items-center rounded-full bg-transparent p-1.5  text-sm hover:bg-lightPink "
-                        onClick={(e) => handleSavePrompt(e, prompt?.id, prompt?.data()?.isSaved)}
-                      >
-                        {prompt?.data()?.isSaved ? (
-                          <StarIconFilled className="h-5 w-5 text-textPink" />
-                        ) : (
-                          <StarIcon className="h-5 w-5 text-textPink" />
-                        )}
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center rounded-full bg-transparent p-1.5  text-sm hover:bg-lightPink "
-                        onClick={(e) => handleDeletePrompt(e, prompt?.id)}
-                      >
-                        <TrashIcon className="h-5 w-5  text-textPink" />
-                      </button>
+                      <div className="flex flex-col justify-center gap-2.5">
+                        <button
+                          type="button"
+                          className="inline-flex items-center rounded-full bg-transparent p-1.5  text-sm hover:bg-lightPink "
+                          onClick={(e) => handleSavePrompt(e, prompt?.id, prompt?.data()?.isSaved)}
+                        >
+                          {prompt?.data()?.isSaved ? (
+                            <StarIconFilled className="h-5 w-5 text-textPink" />
+                          ) : (
+                            <StarIcon className="h-5 w-5 text-textPink" />
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          className="inline-flex items-center rounded-full bg-transparent p-1.5  text-sm hover:bg-lightPink "
+                          onClick={(e) => handleDeletePrompt(e, prompt?.id)}
+                        >
+                          <TrashIcon className="h-5 w-5  text-textPink" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex h-full items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                      <Image
+                        src="/assets/images/star-card.png"
+                        width={180}
+                        height={180}
+                        alt=""
+                        priority
+                      />
+                      <p className="max-w-[80%] text-center text-textDarkBlue opacity-80">
+                        No recent history found. Paraphrase the text and you&apos;ll see it
+                        displayed here.
+                      </p>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
