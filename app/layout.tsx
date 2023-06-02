@@ -19,9 +19,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <SessionProvider session={session}>
           <ClientProvider>
-            <div className="bg-strawberry-gradient h-full min-h-screen">
-              <Header />
-              <div>{children}</div>
+            <div className="fixed h-screen w-full overflow-hidden">
+              <div className="bg-strawberry-gradient h-full min-h-screen w-screen overflow-x-hidden overflow-y-scroll">
+                <Header />
+                <div>{children}</div>
+              </div>
             </div>
           </ClientProvider>
         </SessionProvider>
