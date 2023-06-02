@@ -1,16 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { getApp, getApps, initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import ENV from './env'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyC6mp2bGm68tOKgXLxAXsU0Ja4q5bClcOA',
-  authDomain: 'strawberry-ai-2cca2.firebaseapp.com',
-  projectId: 'strawberry-ai-2cca2',
-  storageBucket: 'strawberry-ai-2cca2.appspot.com',
-  messagingSenderId: '111173280836',
-  appId: '1:111173280836:web:62c2610629d4d4b2380811',
-  measurementId: 'G-EHQD7MGKYL',
+  apiKey: ENV.FIREBASE_API_KEY,
+  authDomain: ENV.FIREBASE_AUTH_DOMAIN,
+  projectId: ENV.FIREBASE_PROJECT_ID,
+  storageBucket: ENV.FIREBASE_STORE_BUCKET,
+  messagingSenderId: ENV.FIREBASE_MESSAGING_SENDER_ID,
+  appId: ENV.FIREBASE_APP_ID,
+  measurementId: ENV.FIREBASE_MEASUREMENT_ID,
 }
 
 // Initialize Firebase
