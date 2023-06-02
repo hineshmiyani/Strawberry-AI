@@ -4,7 +4,7 @@
 
 </div>
 
-![Strawberry AI](https://i.imgur.com/C007Tut.png)
+![Strawberry AI](https://i.imgur.com/k2Aena2.png)
 
 Strawberry AI is a powerful text paraphrasing tool that utilizes the OpenAI API to enhance your written content. Whether you need to fix grammar errors, rephrase sentences, improve readability, enhance fluency, simplify complex text, add a professional touch, or infuse creativity into your writing, Strawberry AI has got you covered.
 
