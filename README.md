@@ -1,6 +1,6 @@
 <div align='center'>
 
-# Strawberry AI Text Paraphrasing Tool
+# [Strawberry AI: Text Paraphrasing Tool](https://strawberry-ai.vercel.app/)
 
 </div>
 
