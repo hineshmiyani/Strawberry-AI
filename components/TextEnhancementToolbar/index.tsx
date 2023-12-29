@@ -30,7 +30,7 @@ const TextEnhancementToolbar = () => {
           key={name}
           className={`${
             active ? 'bg-lightPink text-textPink' : 'text-textDarkBlue opacity-90'
-          } flex flex-shrink-0 cursor-pointer select-none items-center justify-between rounded-xl px-3 py-1.5 font-medium transition-colors duration-500 ease-in-out`}
+          } flex flex-shrink-0 cursor-pointer select-none items-center justify-between rounded-xl px-3 py-1.5 font-medium transition-colors duration-100 ease-in-out`}
           onClick={() => handleTabClick(name)}
         >
           <div className="flex items-center">
