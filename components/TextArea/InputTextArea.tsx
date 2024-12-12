@@ -1,13 +1,16 @@
 'use client'
-import React, { Dispatch, FormEvent, SetStateAction, useEffect, useMemo, useState } from 'react'
+
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
+import axios from 'axios'
 import { DocumentData, addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useSession } from 'next-auth/react'
-import axios from 'axios'
-import Spinner from '../Fallback/Spinner'
-import Skeleton from '../Fallback/Skeleton'
+import React, { Dispatch, FormEvent, SetStateAction, useEffect, useMemo, useState } from 'react'
+
 import { useToolbarTabsContext } from '@/context/ToolbarContextProvider'
 import { db } from '@/firebase'
+
+import Skeleton from '../Fallback/Skeleton'
+import Spinner from '../Fallback/Spinner'
 
 type Props = {
   prompt: DocumentData | undefined
@@ -28,7 +31,7 @@ const InputTextArea = ({
   const { tabs, setTabs } = useToolbarTabsContext()
   const [inputText, setInputText] = useState('')
 
-  const model = 'gpt-3.5-turbo'
+  const model = 'gpt-4o-mini'
   const activeTabs = useMemo(() => tabs?.filter((tab) => tab?.active), [tabs])
 
   useEffect(() => {
@@ -89,13 +92,16 @@ const InputTextArea = ({
       const prompt: Prompt = {
         input: trimmedInput,
         output:
-          data?.choices?.[0]?.message?.content || 'Strawberry.ai was unable to repharse your text!',
+          data?.choices?.[0]?.message?.content || 'Strawberry.ai was unable to rephrase your text!',
         createdAt: serverTimestamp(),
         tags: activeTabNames,
         isSaved: false,
       }
 
-      if (session?.user?.email) {
+      if (
+        session?.user?.email &&
+        prompt?.output !== 'Strawberry.ai was unable to rephrase your text!'
+      ) {
         await addPrompt(prompt)
       }
 

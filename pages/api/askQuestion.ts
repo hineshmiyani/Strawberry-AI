@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+
 import query from '@/lib/queryApi'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -12,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // OpenAI Query
   const response = await query(prompt, model)
 
-  res.status(200).send((response as any)?.data)
+  res.status(200).send(response as any)
 }
 
 export default handler
