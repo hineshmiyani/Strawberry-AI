@@ -4,8 +4,10 @@ import { DocumentDuplicateIcon } from '@heroicons/react/24/outline'
 import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css'
 import { toast } from 'react-hot-toast'
-import Skeleton from '../Fallback/Skeleton'
+
 import useIsMobile from '@/hooks/useIsMobile'
+
+import Skeleton from '../Fallback/Skeleton'
 
 type Props = {
   isPromptLoading: boolean

@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
+
 import ToolbarContextProvider from '@/context/ToolbarContextProvider'
 
 type Props = {

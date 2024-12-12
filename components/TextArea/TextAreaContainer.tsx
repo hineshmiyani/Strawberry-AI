@@ -4,10 +4,12 @@ import { useSession } from 'next-auth/react'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { doc } from 'firebase/firestore'
 import { useSearchParams } from 'next/navigation'
-import InputTextArea from './InputTextArea'
-import OutputTextContainer from './OutputTextContainer'
+
 import { db } from '@/firebase'
 import useDebounce from '@/hooks/useDebounce'
+
+import InputTextArea from './InputTextArea'
+import OutputTextContainer from './OutputTextContainer'
 
 const TextAreaContainer = () => {
   const searchParams = useSearchParams()

@@ -1,12 +1,14 @@
-import React from 'react'
-import { Inter } from 'next/font/google'
 import { getServerSession } from 'next-auth/next'
-import Head from './head'
-import './globals.css'
+import { Inter } from 'next/font/google'
+import React from 'react'
+
 import Header from '@/components/Header'
 import ClientProvider from '@/components/Providers/ClientProvider'
 import SessionProvider from '@/components/Providers/SessionProvider'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
+
+import './globals.css'
+import Head from './head'
 
 const inter = Inter({ subsets: ['latin'] })
 

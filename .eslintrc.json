@@ -59,7 +59,7 @@
         "tsx": "never"
       }
     ],
-    "import/no-unresolved": [2, { "ignore": ["^~"] }],
+    "import/no-unresolved": [2, { "ignore": ["^@"] }],
     "prettier/prettier": "error",
     "no-unused-vars": "off",
     "no-useless-constructor": "off",
@@ -102,12 +102,8 @@
     "import/order": [
       "error",
       {
-        "pathGroups": [
-          {
-            "pattern": "~/**",
-            "group": "external"
-          }
-        ]
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "always"
       }
     ],
     "linebreak-style": "off"
