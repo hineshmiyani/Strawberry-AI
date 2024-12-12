@@ -1,4 +1,6 @@
 'use client'
+import { StarIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid'
 import {
   collection,
   deleteDoc,
@@ -9,12 +11,11 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
-import { useRouter } from 'next/navigation'
-import { StarIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid'
-import Image from 'next/image'
+
 import { db } from '@/firebase'
 
 type Props = {

@@ -1,5 +1,7 @@
 'use client'
 
+import { StarIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid'
 import {
   collection,
   deleteDoc,
@@ -11,12 +13,11 @@ import {
   where,
 } from 'firebase/firestore'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
-import { useRouter } from 'next/navigation'
-import { StarIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid'
-import Image from 'next/image'
+
 import { db } from '@/firebase'
 
 type Props = {
@@ -98,7 +99,7 @@ const SavedDrawer = ({ isSavedDrawerOpen, setIsSavedDrawerOpen }: Props) => {
         >
           <div className="relative flex h-full w-screen max-w-lg flex-col gap-4 overflow-y-hidden p-4 pb-10 ">
             <div className="flex items-center justify-between">
-              <h1 className="text-xl font-bold text-textDarkBlue opacity-90">Saved</h1>
+              <h1 className="text-xl font-bold text-textDarkBlue opacity-90">Starred</h1>
               <button
                 type="button"
                 className="inline-flex items-center rounded-full  bg-transparent p-2 text-sm  text-textPink hover:bg-lightPink "

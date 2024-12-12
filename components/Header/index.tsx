@@ -1,15 +1,17 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import { Dropdown } from 'flowbite-react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { Dropdown } from 'flowbite-react'
-import StarIcon from '../Icons/StarIcon'
-import LogOutIcon from '../Icons/LogOutIcon'
-import HistoryIcon from '../Icons/HistoryIcon'
+import React, { useEffect, useState } from 'react'
+
+import { useToolbarTabsContext } from '@/context/ToolbarContextProvider'
+
 import HistoryDrawer from '../Drawers/HistoryDrawer'
 import SavedDrawer from '../Drawers/SavedDrawer'
-import { useToolbarTabsContext } from '@/context/ToolbarContextProvider'
+import HistoryIcon from '../Icons/HistoryIcon'
+import LogOutIcon from '../Icons/LogOutIcon'
+import StarIcon from '../Icons/StarIcon'
 
 const Header = () => {
   const { data: session } = useSession()
@@ -85,7 +87,7 @@ const Header = () => {
                 className="hidden cursor-pointer font-medium text-textPink sm:block"
                 onClick={() => setIsSavedDrawerOpen(true)}
               >
-                Saved
+                Starred
               </button>
               <button
                 className="hidden cursor-pointer font-medium text-textPink sm:block"
@@ -125,7 +127,7 @@ const Header = () => {
                     icon={StarIcon as unknown as React.FC<React.SVGProps<SVGSVGElement>>}
                     onClick={() => setIsSavedDrawerOpen(true)}
                   >
-                    Saved
+                    Starred
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item
