@@ -1,9 +1,9 @@
 import openai from './openai'
 
-const query = async (prompt: string, model: string) => {
+const query = async (prompt: string) => {
   const res = await openai.chat.completions
     .create({
-      model,
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.9,
       top_p: 1,

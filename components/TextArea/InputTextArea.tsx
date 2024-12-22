@@ -31,7 +31,6 @@ const InputTextArea = ({
   const { tabs, setTabs } = useToolbarTabsContext()
   const [inputText, setInputText] = useState('')
 
-  const model = 'gpt-4o-mini'
   const activeTabs = useMemo(() => tabs?.filter((tab) => tab?.active), [tabs])
 
   useEffect(() => {
@@ -80,7 +79,6 @@ const InputTextArea = ({
       },
       data: {
         prompt: combinedInputText,
-        model,
         session,
       },
     }
